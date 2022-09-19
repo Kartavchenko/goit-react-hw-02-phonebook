@@ -1,8 +1,15 @@
-import { Component } from "react";
+import { Component } from 'react';
 
-export default class Phonebook extends Component {
-    state = {
-  contacts: [],
-  name: ''
+export class Phonebook extends Component {
+  state = {
+    contacts: [],
+    name: '',
+    };
+
+    render() {
+        return (
+            <div>
+            </div>
+        )
+    }
 }
-};
