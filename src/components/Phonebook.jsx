@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { FormContact } from './FromContact';
 import { ListContacts } from './ListContacts';
-// import { SearchContact } from './SearchContact';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
 export class Phonebook extends Component {
   state = {
@@ -10,7 +10,10 @@ export class Phonebook extends Component {
     filter: '',
   };
 
-  addContact = contact =>
+  addContact = contact => {
+    if (this.checkContact(contact)) {
+      return alert(`${contact.name} ${contact.number} alredy in contacts list`);
+    }
     this.setState(prevState => {
       const newContact = {
         id: nanoid(),
@@ -20,15 +23,24 @@ export class Phonebook extends Component {
         contacts: [...prevState.contacts, newContact],
       };
     });
+  };
 
-  removeContact(id) {
+  removeContact = id => {
     this.setState(prev => {
       const newContact = prev.contacts.filter(item => item.id !== id);
       return {
         contacts: newContact,
       };
     });
-  }
+  };
+
+  checkContact = ({ name, number }) => {
+    const { contacts } = this.state;
+    const result = contacts.find(
+      item => item.name === name && item.number === number
+    );
+    return result;
+  };
 
   handleSearch = e => {
     const { name, value } = e.target;
@@ -59,12 +71,26 @@ export class Phonebook extends Component {
   render() {
     const contacts = this.filterContact();
     return (
-      <div>
+      <div
+        style={{
+          marginLeft: '50px',
+          marginTop: '50px',
+        }}
+      >
+        <h1>Phonebook</h1>
         <FormContact addContact={this.addContact} />
-        {/* <SearchContact /> */}
-        <label>
+        <label
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           Find contact by name
           <input
+            style={{
+              width: '200px',
+              marginTop: '5px',
+            }}
             type="text"
             name="filter"
             value={this.state.filter}
@@ -74,8 +100,23 @@ export class Phonebook extends Component {
             required
           />
         </label>
-        <ListContacts contacts={contacts} remove={this.removeContact} />
+        <h2>Contacts</h2>
+        <ul>
+          <ListContacts
+            contacts={contacts}
+            removeContact={this.removeContact}
+          />
+        </ul>
       </div>
     );
   }
 }
+
+Phonebook.propTypes = {
+  addContact: PropTypes.func,
+  removeContact: PropTypes.func,
+  checkContact: PropTypes.func,
+  handleSearch: PropTypes.func,
+  filterContact: PropTypes.func,
+  label: PropTypes.string,
+};

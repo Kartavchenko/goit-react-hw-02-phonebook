@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class FormContact extends Component {
   state = {
@@ -27,10 +28,23 @@ export class FormContact extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>
+          <div
+            style={{
+              marginBottom: '10px',
+            }}
+          >
+            <label
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               Name
               <input
+                style={{
+                  width: '200px',
+                  marginTop: '5px',
+                }}
                 type="text"
                 name="name"
                 value={this.state.name}
@@ -41,10 +55,19 @@ export class FormContact extends Component {
               />
             </label>
           </div>
-          <div>
-            <label>
+          <div style={{ marginBottom: '10px' }}>
+            <label
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               Number
               <input
+                style={{
+                  width: '200px',
+                  marginTop: '5px',
+                }}
                 type="tel"
                 name="number"
                 value={this.state.number}
@@ -55,9 +78,15 @@ export class FormContact extends Component {
               />
             </label>
           </div>
-          <button type="submit">Add Contact</button>
+          <button type="submit" style={{ marginBottom: '10px' }}>
+            Add Contact
+          </button>
         </form>
       </div>
     );
   }
 }
+
+FormContact.propTypes = {
+  lable: PropTypes.string,
+};

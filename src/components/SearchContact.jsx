@@ -13,6 +13,15 @@ export class SearchContact extends Component {
     });
   };
 
+  removeContact(id) {
+    this.setState(prev => {
+      const newContact = prev.contacts.filter(item => item.id !== id);
+      return {
+        contacts: newContact,
+      };
+    });
+  }
+
   filterContact = () => {
     const { contacts, filter } = this.state;
 
