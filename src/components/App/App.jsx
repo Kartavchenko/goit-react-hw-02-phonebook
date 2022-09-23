@@ -1,14 +1,11 @@
 import { Component } from 'react';
-import { FormContact } from './Form/FromContact';
-import { ListContacts } from './List/ListContacts';
+import { FormContact } from '../Form/FromContact';
+import { ListContacts } from '../List/ListContacts';
+import { Filter } from 'components/Filter/Filter';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
-export const App = () => {
-  return <Phonebook />;
-};
-
-export class Phonebook extends Component {
+export class App extends Component {
   state = {
     contacts: [],
     filter: '',
@@ -46,13 +43,6 @@ export class Phonebook extends Component {
     return result;
   };
 
-  handleSearch = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
   filterContact = () => {
     const { contacts, filter } = this.state;
 
@@ -72,7 +62,12 @@ export class Phonebook extends Component {
     return filterUser;
   };
 
+  changeFilter = evt => {
+    this.setState({ filter: evt.currentTarget.value });
+  };
+
   render() {
+    const { filter } = this.state;
     return (
       <div
         style={{
@@ -82,27 +77,7 @@ export class Phonebook extends Component {
       >
         <h1>Phonebook</h1>
         <FormContact addContact={this.addContact} />
-        <label
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          Find contact by name
-          <input
-            style={{
-              width: '200px',
-              marginTop: '5px',
-            }}
-            type="text"
-            name="filter"
-            value={this.state.filter}
-            onChange={this.handleSearch}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-        </label>
+        <Filter value={filter} onChange={this.changeFilter} />
         <h2>Contacts</h2>
         <ListContacts
           contacts={this.filterContact()}
@@ -113,7 +88,7 @@ export class Phonebook extends Component {
   }
 }
 
-Phonebook.propTypes = {
+App.propTypes = {
   addContact: PropTypes.func,
   removeContact: PropTypes.func,
   checkContact: PropTypes.func,
